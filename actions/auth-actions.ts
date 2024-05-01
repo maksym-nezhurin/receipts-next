@@ -2,6 +2,7 @@
 
 import {hashUserPassword} from "@/lib/hash";
 import {redirect} from "next/navigation";
+import { cookies } from 'next/headers'
 
 const PASS_LENGTH = 8
 // type SignupResult = boolean | { errors: Record<string, string>};
@@ -33,9 +34,17 @@ export async function signup(prevState: any, formData: FormData) {
     const hashedPassword = hashUserPassword(password);
 
     try {
+        const expires = new Date(Date.now() + 7 * 24 * 60 * 60 * 1000)
+        cookies().set('authenticated', 'true', {
+            httpOnly: true,
+            secure: true,
+            expires: expires,
+            sameSite: 'lax',
+            path: '/',
+        })
         console.log(email, password, hashedPassword);
         // store in the db
-        return true;
+        // return true;
     } catch (error) {
         return false;
     }
@@ -43,5 +52,5 @@ export async function signup(prevState: any, formData: FormData) {
 
     // store it in the db (create a new user)
 
-    redirect('/contact')
+    redirect('/recipes')
 }

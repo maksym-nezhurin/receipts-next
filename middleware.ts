@@ -4,7 +4,7 @@ export function middleware(req: NextRequest) {
     const nextUrl = req.nextUrl;
 
     if (nextUrl.pathname === '/recipes') {
-        console.log('auth middleware', req.cookies);
+        console.log('auth middleware', req.cookies.get('authenticated'));
         if (req.cookies.get('authenticated')) {
             return NextResponse.rewrite(new URL('/recipes', req.url));
         } else {

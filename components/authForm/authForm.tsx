@@ -19,32 +19,36 @@ export default function AuthForm() {
   // @ts-ignore
     const [formState, formAction] = useFormState<IFormState>(signup, initialState);
   return (
-    <form id="auth-form" action={formAction}>
-      <div>
-        <Image src="/images/auth-icon.jpg" alt="A lock icon" width={100} height={100} />
-      </div>
-      <p>
-        <label htmlFor="email">Email</label>
-        <input type="email" name="email" id="email" />
-      </p>
-      <p>
-        <label htmlFor="password">Password</label>
-        <input type="password" name="password" id="password" />
-      </p>
+      <form id="auth-form" action={formAction}>
+          <div>
+              <Image src="/images/auth-icon.jpg" alt="A lock icon" width={100} height={100}/>
+          </div>
+          <div className="py-2">
+              <label htmlFor="name">Name</label>
+              <input type="text" name="name" id="name"/>
+          </div>
+          <div className="py-2">
+              <label htmlFor="email">Email</label>
+              <input type="email" name="email" id="email"/>
+          </div>
+          <div className="py-2">
+              <label htmlFor="password">Password</label>
+              <input type="password" name="password" id="password"/>
+          </div>
 
-        {formState.errors && <ul id="form-errors">{
-            Object.keys(formState.errors).map((key) => (
-                <li key={key}>{formState.errors[key]}</li>
-            ))
-        }</ul>}
-      <p>
-        <button type="submit">
-          Create Account
-        </button>
-      </p>
-      <p>
-        <Link href="/public">Login with existing account.</Link>
-      </p>
-    </form>
+          {formState.errors && <ul id="form-errors">{
+              Object.keys(formState.errors).map((key) => (
+                  <li key={key}>{formState.errors[key]}</li>
+              ))
+          }</ul>}
+          <p>
+              <button type="submit">
+                  Create Account
+              </button>
+          </p>
+          <p>
+              <Link href="/public">Login with existing account.</Link>
+          </p>
+      </form>
   );
 }
