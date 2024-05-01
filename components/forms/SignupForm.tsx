@@ -16,6 +16,7 @@ import { Label } from "@/components/ui/label";
 import { Input } from "@/components/ui/input";
 import {registerUserAction} from "@/actions/auth-actions";
 import {FormErrors} from "@/components/forms/FormErrors";
+import {SubmitButton} from "@/components/SubmitButton/SubmitButton";
 
 export function SignupForm() {
     const INITIAL_STATE = {
@@ -67,7 +68,7 @@ export function SignupForm() {
                         </div>
                     </CardContent>
                     <CardFooter className="flex flex-col">
-                        <button className="w-full">Sign Up</button>
+                        <SubmitButton className="w-full" text="Sign Up" loadingText="Loading" />
                     </CardFooter>
                 </Card>
                 <div className="mt-4 text-center text-sm">

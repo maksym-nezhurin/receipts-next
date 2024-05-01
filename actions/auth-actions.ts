@@ -5,7 +5,7 @@ import {redirect} from "next/navigation";
 import { cookies } from 'next/headers'
 import {schemaRegister} from "@/actions/schemas/register";
 import {schemaLogin} from "@/actions/schemas/login";
-import {registerUserService} from "@/services/auth-service";
+import {loginUserService, registerUserService} from "@/services/auth-service";
 
 const PASS_LENGTH = 8
 // type SignupResult = boolean | { errors: Record<string, string>};
@@ -131,10 +131,52 @@ export async function loginUserAction(prevState: any, formData: FormData) {
         };
     }
 
-    return {
-        ...prevState,
-        zodErrors: {},
-        message: "User Login Successfully",
-        data: 'ok',
-    };
+    try {
+        // @ts-ignore
+        const responseData = await loginUserService(validatedFields?.data);
+
+        if (!responseData) {
+            return {
+                ...prevState,
+                apiErrors: null,
+                zodErrors: null,
+                message: "Ops! Something went wrong. Please try again.",
+            };
+        }
+
+        if (responseData.error) {
+            return {
+                ...prevState,
+                apiErrors: responseData.error,
+                zodErrors: null,
+                message: "Failed to Login.",
+            };
+        }
+        console.log('responseData', responseData)
+        const { access_token, token_type, message } = responseData;
+
+        authUser(`${token_type} ${access_token}`)
+
+        return {
+            message,
+            data: 'ok',
+        };
+    } catch (error) {
+        return {
+            ...prevState,
+            data: 'error',
+            message: "Failed to Login User.",
+        };
+    }
+}
+
+const authUser = (value: string) => {
+    const expires = new Date(Date.now() + 0.2 * 24 * 60 * 60 * 1000)
+    cookies().set('authenticated', value, {
+        httpOnly: true,
+        secure: true,
+        expires: expires,
+        sameSite: 'lax',
+        path: '/',
+    })
 }

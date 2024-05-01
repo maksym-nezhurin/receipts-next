@@ -31,7 +31,7 @@ export async function registerUserService(userData: RegisterUserProps) {
 }
 
 export async function loginUserService(userData: LoginUserProps) {
-    const url = new URL("/api/auth/local", baseUrl);
+    const url = new URL("/api/login", baseUrl);
 
     try {
         const response = await fetch(url, {

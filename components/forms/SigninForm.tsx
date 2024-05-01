@@ -16,11 +16,21 @@ import { Input } from "@/components/ui/input";
 import {useFormState} from "react-dom";
 import {loginUserAction} from "@/actions/auth-actions";
 import {FormErrors} from "@/components/forms/FormErrors";
+import {useRouter} from "next/router";
+import {SubmitButton} from "@/components/SubmitButton/SubmitButton";
+import {useEffect} from "react";
 
 export function SigninForm() {
+    const router = useRouter();
     const [formState, formAction] = useFormState(loginUserAction, { data: null });
     console.log(formState);
-    console.log(formState.message, 'check if user is logged in');
+
+    useEffect(()=> {
+        if (formState.data === 'ok') {
+            router.push('/recipes');
+        }
+    }, [formState.data])
+    // console.log(formState.message, 'check if user is logged in');
     return (
         <div className="w-full max-w-md">
             <form action={formAction}>
@@ -33,11 +43,11 @@ export function SigninForm() {
                     </CardHeader>
                     <CardContent className="space-y-4">
                         <div className="space-y-2">
-                            <Label htmlFor="email">Email</Label>
+                            <Label htmlFor="email">Username or Email</Label>
                             <Input
-                                id="identifier"
-                                name="identifier"
-                                type="text"
+                                id="email"
+                                name="email"
+                                type="email"
                                 placeholder="username or email"
                             />
                             <FormErrors errors={formState?.zodErrors?.email} />
@@ -54,7 +64,7 @@ export function SigninForm() {
                         </div>
                     </CardContent>
                     <CardFooter className="flex flex-col">
-                        <button className="w-full">Sign In</button>
+                        <SubmitButton className="w-full" text="Sign In" loadingText="Loading" />
                     </CardFooter>
                 </Card>
                 <div className="mt-4 text-center text-sm">
