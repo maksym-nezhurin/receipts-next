@@ -36,14 +36,14 @@ export function SignupForm() {
                     </CardHeader>
                     <CardContent className="space-y-4">
                         <div className="space-y-2">
-                            <Label htmlFor="username">Username</Label>
+                            <Label htmlFor="name">Username</Label>
                             <Input
-                                id="username"
-                                name="username"
+                                id="name"
+                                name="name"
                                 type="text"
-                                placeholder="username"
+                                placeholder="name"
                             />
-                            <FormErrors errors={formState?.zodErrors?.username} />
+                            <FormErrors errors={formState?.zodErrors?.name} />
                         </div>
                         <div className="space-y-2">
                             <Label htmlFor="email">Email</Label>
@@ -63,6 +63,16 @@ export function SignupForm() {
                                 name="password"
                                 type="password"
                                 placeholder="password"
+                            />
+                            <FormErrors errors={formState?.zodErrors?.password} />
+                        </div>
+                        <div className="space-y-2">
+                            <Label htmlFor="confirmation">Password confirmation:</Label>
+                            <Input
+                                id="confirmation"
+                                name="confirmation"
+                                type="password"
+                                placeholder="confirmation"
                             />
                             <FormErrors errors={formState?.zodErrors?.password} />
                         </div>

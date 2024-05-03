@@ -16,9 +16,9 @@ import { Input } from "@/components/ui/input";
 import {useFormState} from "react-dom";
 import {loginUserAction} from "@/actions/auth-actions";
 import {FormErrors} from "@/components/forms/FormErrors";
-import {useRouter} from "next/router";
 import {SubmitButton} from "@/components/SubmitButton/SubmitButton";
 import {useEffect} from "react";
+import {useRouter} from "next/navigation";
 
 export function SigninForm() {
     const router = useRouter();
@@ -27,7 +27,7 @@ export function SigninForm() {
 
     useEffect(()=> {
         if (formState.data === 'ok') {
-            router.push('/recipes');
+            router.replace('/recipes');
         }
     }, [formState.data])
     // console.log(formState.message, 'check if user is logged in');

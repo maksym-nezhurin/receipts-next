@@ -60,8 +60,9 @@ export async function signup(prevState: any, formData: FormData) {
 
 export async function registerUserAction(prevState: any, formData: FormData) {
     const fields = {
-        username: formData.get("username"),
+        name: formData.get("name"),
         password: formData.get("password"),
+        password_confirmation: formData.get("confirmation"),
         email: formData.get("email"),
     };
 
@@ -80,13 +81,14 @@ export async function registerUserAction(prevState: any, formData: FormData) {
 
     try {
         const responseData = await registerUserService(validatedFields.data);
+        const { message, errors } = responseData;
 
-        if (!responseData) {
+        if (!responseData || errors) {
             return {
                 ...prevState,
                 apiErrors: null,
-                zodErrors: null,
-                message: "Ops! Something went wrong. Please try again.",
+                zodErrors: errors,
+                message: message || "Ops! Something went wrong. Please try again.",
             };
         }
 
@@ -98,6 +100,19 @@ export async function registerUserAction(prevState: any, formData: FormData) {
                 message: "Failed to Register.",
             };
         }
+
+        const {
+            data: user,
+            access_token,
+            token_type
+        } = responseData;
+        console.log('user', user);
+        authUser(`${token_type} ${access_token}`)
+
+        return {
+            message,
+            data: 'ok',
+        };
     } catch (error) {
         return {
             ...prevState,
@@ -105,13 +120,6 @@ export async function registerUserAction(prevState: any, formData: FormData) {
             message: "Failed to Register User.",
         };
     }
-
-    return {
-        ...prevState,
-        zodErrors: {},
-        message: "User Registered Successfully",
-        data: 'ok',
-    };
 }
 
 export async function loginUserAction(prevState: any, formData: FormData) {
@@ -152,7 +160,7 @@ export async function loginUserAction(prevState: any, formData: FormData) {
                 message: "Failed to Login.",
             };
         }
-        console.log('responseData', responseData)
+
         const { access_token, token_type, message } = responseData;
 
         authUser(`${token_type} ${access_token}`)

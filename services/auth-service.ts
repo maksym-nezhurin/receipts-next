@@ -1,5 +1,5 @@
 interface RegisterUserProps {
-    username: string;
+    name: string;
     password: string;
     email: string;
 }
@@ -12,7 +12,7 @@ interface LoginUserProps {
 const baseUrl = process.env.API_URL || "http://localhost:1337";
 
 export async function registerUserService(userData: RegisterUserProps) {
-    const url = new URL("/api/auth/local/register", baseUrl);
+    const url = new URL("/api/register", baseUrl);
 
     try {
         const response = await fetch(url, {
@@ -27,6 +27,7 @@ export async function registerUserService(userData: RegisterUserProps) {
         return response.json();
     } catch (error) {
         console.error("Registration Service Error:", error);
+        throw error;
     }
 }
 
