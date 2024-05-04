@@ -12,10 +12,11 @@ interface LoginUserProps {
 const baseUrl = process.env.API_URL || "http://localhost:1337";
 
 export async function registerUserService(userData: RegisterUserProps) {
-    const url = new URL("/api/register", baseUrl);
+    // const url = new URL("/api/register", baseUrl);
+
 
     try {
-        const response = await fetch(url, {
+        const response = await fetch(`${process.env.BASE_URL}/api/register`, {
             method: "POST",
             headers: {
                 "Content-Type": "application/json",
@@ -23,7 +24,7 @@ export async function registerUserService(userData: RegisterUserProps) {
             body: JSON.stringify({ ...userData }),
             cache: "no-cache",
         });
-
+        // console.log('response', response)
         return response.json();
     } catch (error) {
         console.error("Registration Service Error:", error);
@@ -32,10 +33,10 @@ export async function registerUserService(userData: RegisterUserProps) {
 }
 
 export async function loginUserService(userData: LoginUserProps) {
-    const url = new URL("/api/login", baseUrl);
+    // const url = new URL("/api/login", baseUrl);
 
     try {
-        const response = await fetch(url, {
+        const response = await fetch(`${process.env.BASE_URL}/api/login`, {
             method: "POST",
             headers: {
                 "Content-Type": "application/json",

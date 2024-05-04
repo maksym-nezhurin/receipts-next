@@ -1,9 +1,16 @@
 'use client'
 import Link from "next/link";
 import {NAV_ITEMS} from "@/constants/navigation";
-import {useState} from "react";
+import React, {useState} from "react";
+import {useSession} from "next-auth/react";
 
-export const Navigation = () => {
+import styles from './NavBar.module.css';
+import {UserMenuIcon} from "@/components/UserMenuIcon/UserMenuIcon";
+
+export const NavBar = () => {
+    const { data: session}= useSession();
+    const isLogged = !!session?.user?.accessToken;
+    console.log('session', session)
     const [open, setOpen] = useState(false);
 
     return (
@@ -21,20 +28,16 @@ export const Navigation = () => {
                     </svg>
                 </button>
             </div>
-            <div className={`${open ? 'none' : 'block' } w-full flex-grow lg:flex lg:items-center lg:w-auto`}>
+            <div className={`${open ? styles.none : 'block' } w-full flex-grow lg:flex lg:items-center lg:w-auto`}>
                 <div className="text-sm lg:flex-grow">
-                    {NAV_ITEMS.map((item) => (
-                        <Link key={item.path} href={item.path} className='block mt-4 lg:inline-block lg:mt-0 text-teal-200 hover:text-white mr-4'>{item.name}</Link>
-                    ))}
+                    {NAV_ITEMS.map(({ path, name, auth}) => {
+                        return ((auth && isLogged) || (!auth)) && <Link key={path} href={path} className='block mt-4 lg:inline-block lg:mt-0 text-teal-200 hover:text-white mr-4'>{name}</Link>
+                    })}
                 </div>
                 <div>
-                    <a href="#"
-                       className="inline-block text-sm px-4 py-2 leading-none border rounded text-white border-white hover:border-transparent hover:text-teal-500 hover:bg-white mt-4 lg:mt-0">Download</a>
-
-                    <Link href={'/signin'} className='block mt-4 lg:inline-block lg:mt-0 text-teal-200 hover:text-white ml-4'>Sign In</Link>
+                    <UserMenuIcon session={session} />
                 </div>
             </div>
         </nav>
-)
-    ;
+    );
 }

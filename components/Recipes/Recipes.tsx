@@ -18,7 +18,7 @@ interface IProps {
     recipes: IRecipe[];
 }
 
-const renderRecipes = (recipes: IRecipe[]) => {
+const renderRecipes = (recipes: IRecipe[] = []) => {
     return recipes.map((recipe) => {
         return (
             <div key={recipe.id} className={styles.recipe}>

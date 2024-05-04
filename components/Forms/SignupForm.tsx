@@ -15,7 +15,7 @@ import {
 import { Label } from "@/components/ui/label";
 import { Input } from "@/components/ui/input";
 import {registerUserAction} from "@/actions/auth-actions";
-import {FormErrors} from "@/components/forms/FormErrors";
+import {FormErrors} from "@/components/Forms/FormErrors";
 import {SubmitButton} from "@/components/SubmitButton/SubmitButton";
 
 export function SignupForm() {

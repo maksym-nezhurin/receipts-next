@@ -1,11 +1,9 @@
 'use server';
 
-import {hashUserPassword} from "@/lib/hash";
-import {redirect} from "next/navigation";
 import { cookies } from 'next/headers'
 import {schemaRegister} from "@/actions/schemas/register";
 import {schemaLogin} from "@/actions/schemas/login";
-import {loginUserService, registerUserService} from "@/services/auth-service";
+import {registerUserService} from "@/services/auth-service";
 
 const PASS_LENGTH = 8
 // type SignupResult = boolean | { errors: Record<string, string>};
@@ -34,28 +32,11 @@ export async function signup(prevState: any, formData: FormData) {
         }
     }
 
-    const hashedPassword = hashUserPassword(password);
-
-    try {
-        const expires = new Date(Date.now() + 7 * 24 * 60 * 60 * 1000)
-        cookies().set('authenticated', 'true', {
-            httpOnly: true,
-            secure: true,
-            expires: expires,
-            sameSite: 'lax',
-            path: '/',
-        })
-        console.log(email, password, hashedPassword);
-        // store in the db
-        // return true;
-    } catch (error) {
-        return false;
-    }
     // return Promise.resolve(true);
 
     // store it in the db (create a new user)
 
-    redirect('/recipes')
+    // redirect('/recipes')
 }
 
 export async function registerUserAction(prevState: any, formData: FormData) {
@@ -101,13 +82,13 @@ export async function registerUserAction(prevState: any, formData: FormData) {
             };
         }
 
-        const {
-            data: user,
-            access_token,
-            token_type
-        } = responseData;
-        console.log('user', user);
-        authUser(`${token_type} ${access_token}`)
+        // const {
+        //     data: user,
+        //     access_token,
+        //     token_type
+        // } = responseData;
+        // console.log('user', user);
+        // authUser(`${token_type} ${access_token}`)
 
         return {
             message,
@@ -123,6 +104,7 @@ export async function registerUserAction(prevState: any, formData: FormData) {
 }
 
 export async function loginUserAction(prevState: any, formData: FormData) {
+    console.log('loginUserAction')
     const fields = {
         password: formData.get("password"),
         email: formData.get("email"),
@@ -140,34 +122,14 @@ export async function loginUserAction(prevState: any, formData: FormData) {
     }
 
     try {
-        // @ts-ignore
-        const responseData = await loginUserService(validatedFields?.data);
-
-        if (!responseData) {
-            return {
-                ...prevState,
-                apiErrors: null,
-                zodErrors: null,
-                message: "Ops! Something went wrong. Please try again.",
-            };
-        }
-
-        if (responseData.error) {
-            return {
-                ...prevState,
-                apiErrors: responseData.error,
-                zodErrors: null,
-                message: "Failed to Login.",
-            };
-        }
-
-        const { access_token, token_type, message } = responseData;
-
-        authUser(`${token_type} ${access_token}`)
+        // signIn('credentials', {
+        //     redirect: true, // Запобігає автоматичному перенаправленню
+        //     ,
+        // });
 
         return {
-            message,
-            data: 'ok',
+            status: 'ok',
+            data: validatedFields.data,
         };
     } catch (error) {
         return {

@@ -1,23 +1,15 @@
-import {NextRequest, NextResponse} from "next/server";
+import { withAuth } from "next-auth/middleware"
 
-export function middleware(req: NextRequest) {
-    const nextUrl = req.nextUrl;
+// middleware is applied to all routes, use conditionals to select
 
-    if (nextUrl.pathname === '/recipes') {
-        const isAuthenticated = req.cookies.get('authenticated');
-        if (isAuthenticated) {
-            // If the cookie exists, allow the request to proceed
-            return NextResponse.next();
-        } else {
-            // If the cookie doesn't exist, redirect the user to the login page
-            return NextResponse.redirect('http://localhost:3000/signin');
-        }
-    }
-
-    // If the request is not for the 'recipes' page, allow it to proceed
-    return NextResponse.next();
-}
-
-export const config = {
-    matcher: ['/recipes']
-};
+export default withAuth(function middleware(req) {}, {
+    callbacks: {
+        authorized: ({ req, token }) => {
+            // console.log('token in md', token)
+            if (req.nextUrl.pathname.startsWith("/recipes") && token === null) {
+                return false
+            }
+            return true
+        },
+    },
+})

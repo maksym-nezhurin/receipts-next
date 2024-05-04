@@ -15,25 +15,47 @@ import { Label } from "@/components/ui/label";
 import { Input } from "@/components/ui/input";
 import {useFormState} from "react-dom";
 import {loginUserAction} from "@/actions/auth-actions";
-import {FormErrors} from "@/components/forms/FormErrors";
+import {FormErrors} from "@/components/Forms/FormErrors";
 import {SubmitButton} from "@/components/SubmitButton/SubmitButton";
-import {useEffect} from "react";
+import {useEffect, useState} from "react";
 import {useRouter} from "next/navigation";
+import {signIn, useSession} from "next-auth/react";
 
+const initialState = {
+    email: '',
+    password: ''
+}
 export function SigninForm() {
     const router = useRouter();
-    const [formState, formAction] = useFormState(loginUserAction, { data: null });
-    console.log(formState);
+    const { data: session }= useSession();
+    const [formState, setFormState] = useState(initialState);
+    const [error, setError] = useState('');
 
-    useEffect(()=> {
-        if (formState.data === 'ok') {
-            router.replace('/recipes');
+    useEffect(() => {
+        if (session?.user?.accessToken) {
+            setError('');
+            router.push('/');
         }
-    }, [formState.data])
+    }, [session])
+    const onHandleSubmit = (e: React.FormEvent) => {
+        e.preventDefault();
+
+        signIn('credentials', {
+            redirect: false,
+            ...formState,
+        })
+
+        if (!session?.user?.accessToken) {
+            setError('Invalid credentials, try again');
+            setFormState(initialState);
+        }
+    }
+
+
     // console.log(formState.message, 'check if user is logged in');
     return (
         <div className="w-full max-w-md">
-            <form action={formAction}>
+            <form onSubmit={onHandleSubmit}>
                 <Card>
                     <CardHeader className="space-y-1">
                         <CardTitle className="text-3xl font-bold">Sign In</CardTitle>
@@ -48,9 +70,11 @@ export function SigninForm() {
                                 id="email"
                                 name="email"
                                 type="email"
+                                value={formState.email}
+                                onChange={(e) => setFormState({...formState, email: e.target.value})}
                                 placeholder="username or email"
                             />
-                            <FormErrors errors={formState?.zodErrors?.email} />
+                            {/*<FormErrors errors={formState?.zodErrors?.email} />*/}
                         </div>
                         <div className="space-y-2">
                             <Label htmlFor="password">Password</Label>
@@ -58,12 +82,15 @@ export function SigninForm() {
                                 id="password"
                                 name="password"
                                 type="password"
+                                value={formState.password}
+                                onChange={(e) => setFormState({...formState, password: e.target.value})}
                                 placeholder="password"
                             />
-                            <FormErrors errors={formState?.zodErrors?.password} />
+                            {/*<FormErrors errors={formState?.zodErrors?.password} />*/}
                         </div>
                     </CardContent>
                     <CardFooter className="flex flex-col">
+                        {error && <p className="text-red-500 text-sm">Please, check your credentials!</p>}
                         <SubmitButton className="w-full" text="Sign In" loadingText="Loading" />
                     </CardFooter>
                 </Card>

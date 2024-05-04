@@ -23,7 +23,7 @@ export const Recipe = (props: IProps) => {
             <div>
                 <h3>Ingredients</h3>
                 <ul>
-                    {recipe.ingredients.map((ingredient, index) => (
+                    {recipe.ingredients?.map((ingredient, index) => (
                         <li key={index}>{ingredient}</li>
                     ))}
                 </ul>
