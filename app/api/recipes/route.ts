@@ -1,10 +1,11 @@
 import { getUserToken } from "@/utils/getSessionUser";
-import {NextApiRequest, NextApiResponse} from "next";
+import {NextApiResponse} from "next";
+import {NextRequest} from "next/server";
 
-export const GET = async (req: NextApiRequest, res: NextApiResponse) => {
+export const GET = async (req: Request | NextRequest, res: NextApiResponse) => {
     try {
         const token = await getUserToken();
-        console.log('token in the route +++', token)
+
         if (token) {
             const request = await fetch(`${process.env.API_URL}/api/recipes`, {
                 method: "GET",

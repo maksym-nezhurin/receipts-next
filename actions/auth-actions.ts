@@ -39,6 +39,30 @@ export async function signup(prevState: any, formData: FormData) {
     // redirect('/recipes')
 }
 
+export async function verifyCodeAction(prevState: any, formData: FormData): Promise<any> {
+    const code = formData.get("code");
+    const code2 = formData.get("code2");
+
+    const data = {
+        code,
+        email: code2
+    };
+
+    const res = await fetch(`${process.env.API_URL}/api/verify`, {
+        method: 'POST',
+        headers: {
+            "Content-Type": "application/json",
+        },
+        body: JSON.stringify(data),
+    });
+    const { message, verified } = await res.json();
+
+    return {
+        verified,
+        result: 'ok',
+    };
+}
+
 export async function registerUserAction(prevState: any, formData: FormData) {
     const fields = {
         name: formData.get("name"),
@@ -62,7 +86,7 @@ export async function registerUserAction(prevState: any, formData: FormData) {
 
     try {
         const responseData = await registerUserService(validatedFields.data);
-        const { message, errors } = responseData;
+        const { message, errors, redirect } = responseData;
 
         if (!responseData || errors) {
             return {
@@ -92,6 +116,8 @@ export async function registerUserAction(prevState: any, formData: FormData) {
 
         return {
             message,
+            redirect,
+            email: validatedFields.data.email,
             data: 'ok',
         };
     } catch (error) {

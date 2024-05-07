@@ -12,7 +12,7 @@ export async function POST(req: Request, res: Response) {
         })
         const ss = await a.json();
         console.log('post response ', ss)
-        return NextResponse.json({ status: 200, message: "success" })
+        return NextResponse.json({ status: 200, message: ss.message, redirect: '/verification' })
     } catch (e) {
         return NextResponse.json(
             { message: "Something went wrong" },

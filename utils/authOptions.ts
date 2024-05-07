@@ -1,6 +1,5 @@
 import type {NextAuthOptions, User} from "next-auth";
 import CredentialsProvider from "next-auth/providers/credentials";
-import {AdapterUser} from "next-auth/adapters";
 
 interface IRequest {
     message: string;
@@ -22,6 +21,7 @@ export const authOptions: NextAuthOptions = {
                 email: { label: "Email", type: "email", placeholder: "Your Email" },
                 password: { label: "Password", type: "password" },
             },
+            // @ts-ignore
             async authorize(credentials, req) {
                 const res = await fetch(`${process.env.API_URL}/sanctum/csrf-cookie`, {
                     method: "GET",
@@ -87,7 +87,7 @@ export const authOptions: NextAuthOptions = {
         }),
     ],
     callbacks: {
-        jwt: async ({ token, user }) => {
+        jwt: async ({ token, user }: { token: any, user: any }) => {
             if (user && !user.error) {
                 token.user = user;
                 token.accessToken = user.accessToken;
@@ -97,8 +97,7 @@ export const authOptions: NextAuthOptions = {
             console.log('jwt')
             return token;
         },
-        session: async ({ session, token }) => {
-            console.log('session')
+        session: async ({ session, token }: { session: any, token: any }) => {
             session.accessToken = token.accessToken;
             session.user = token.user || session.user;
             return session;

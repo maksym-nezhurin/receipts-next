@@ -32,11 +32,12 @@ export function SigninForm() {
     const [error, setError] = useState('');
 
     useEffect(() => {
+        // @ts-ignore
         if (session?.user?.accessToken) {
-            setError('');
-            router.push('/');
+            setError("");
+            router.push("/");
         }
-    }, [session])
+    }, [session, router])
     const onHandleSubmit = (e: React.FormEvent) => {
         e.preventDefault();
 
@@ -44,7 +45,7 @@ export function SigninForm() {
             redirect: false,
             ...formState,
         })
-
+// @ts-ignore
         if (!session?.user?.accessToken) {
             setError('Invalid credentials, try again');
             setFormState(initialState);
@@ -95,8 +96,8 @@ export function SigninForm() {
                     </CardFooter>
                 </Card>
                 <div className="mt-4 text-center text-sm">
-                    Don't have an account?
-                    <Link className="underline ml-2" href="/signup">
+                    Don&apos;t have an account?
+                    <Link className="underline ml-2" href='/signup'>
                         Sign Up
                     </Link>
                 </div>

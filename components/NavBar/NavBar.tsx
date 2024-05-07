@@ -6,9 +6,11 @@ import {useSession} from "next-auth/react";
 
 import styles from './NavBar.module.css';
 import {UserMenuIcon} from "@/components/UserMenuIcon/UserMenuIcon";
+import {ISession} from "@/interfaces/auth";
 
 export const NavBar = () => {
     const { data: session}= useSession();
+    // @ts-ignore
     const isLogged = !!session?.user?.accessToken;
     console.log('session', session)
     const [open, setOpen] = useState(false);
@@ -35,7 +37,7 @@ export const NavBar = () => {
                     })}
                 </div>
                 <div>
-                    <UserMenuIcon session={session} />
+                    <UserMenuIcon session={session as ISession} />
                 </div>
             </div>
         </nav>

@@ -1,11 +1,12 @@
 'use client'
 import profileDefault from '@/assets/images/profile.png';
 import { useState} from "react";
-import {signOut, signIn} from "next-auth/react";
+import { signOut } from "next-auth/react";
 import Image from "next/image";
 import {useRouter} from "next/navigation";
 import Link from "next/link";
 import {ISession} from "@/interfaces/auth";
+import {logout} from "@/actions/logout";
 
 interface IProps {
     session: ISession | null
@@ -15,7 +16,6 @@ export const UserMenuIcon = (props: IProps) => {
     const user = session?.user
     const router = useRouter();
     const { name, avatar, accessToken } = user || {};
-    console.log('accessToken', accessToken)
     const profileImage = avatar || profileDefault;
     const [isProfileMenuOpen, setProfileMenuOpen] = useState<Boolean>(false);
 
@@ -34,9 +34,10 @@ export const UserMenuIcon = (props: IProps) => {
             </button
             >
             <button
-                onClick={() => {
+                onClick={async () => {
                     setProfileMenuOpen(false);
-                    signOut();
+
+                    await logout();
                 }}
                 className="block px-4 py-2 text-sm text-gray-700"
                 role="menuitem"
@@ -47,7 +48,7 @@ export const UserMenuIcon = (props: IProps) => {
         </> : <>
             <div className="flex items-center">
                 <Link href={'/signin?callbackUrl=http%3A%2F%2Flocalhost%3A3000%2F'}>
-                    login
+                    Login
                 </Link>
             </div>
         </>;
