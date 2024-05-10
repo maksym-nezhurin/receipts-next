@@ -38,20 +38,20 @@ export function SigninForm() {
             router.push("/");
         }
     }, [session, router])
-    const onHandleSubmit = (e: React.FormEvent) => {
-        e.preventDefault();
 
-        signIn('credentials', {
+    const onHandleSubmit = async (e: React.FormEvent) => {
+        e.preventDefault();
+        console.log(formState, 'formState')
+        await signIn('credentials', {
             redirect: false,
             ...formState,
         })
-// @ts-ignore
+        // @ts-ignore
         if (!session?.user?.accessToken) {
             setError('Invalid credentials, try again');
             setFormState(initialState);
         }
     }
-
 
     // console.log(formState.message, 'check if user is logged in');
     return (

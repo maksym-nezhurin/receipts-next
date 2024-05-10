@@ -17,12 +17,12 @@ export default function RecipePage ({ params: { id } }: { params: { id: string }
     useEffect(() => {
         const getData = async () => {
             const res = await getTheRecipe(id);
-            console.log('res', res)
+
             setRecipe(res.data);
         };
         getData().then()
     }, [id]);
-    console.log('recipes page')
+
     return (
         <div>
             <h1 className="text-4xl font-bold">Welcome to Recipe page!</h1>

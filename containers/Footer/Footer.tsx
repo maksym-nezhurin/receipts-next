@@ -1,9 +1,15 @@
 import {NAV_ITEMS} from "@/constants/navigation";
 import Link from "next/link";
+import {cn} from "@/lib/utils";
 
-export const Footer = () => {
+interface IProps {
+    className?: string;
+}
+export const Footer = (props: IProps) => {
+    const { className } = props;
+
     return (
-        <footer className='flex items-center justify-between flex-wrap bg-teal-500 p-8'>
+        <footer className={cn(className, 'flex items-center justify-between flex-wrap bg-teal-500 p-8')}>
             <div className="block">
                 <div className='text-xl text-white font-bold'>logo</div>
             </div>

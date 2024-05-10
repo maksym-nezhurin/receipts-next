@@ -11,9 +11,10 @@ export interface IRecipe {
 }
 
 export interface IIngredient {
+    id: number;
     name: string;
     calories: string;
-    category_id: string;
+    category: string;
 }
 
 export interface IComment {

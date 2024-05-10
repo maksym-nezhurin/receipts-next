@@ -7,37 +7,6 @@ import {registerUserService} from "@/services/auth-service";
 
 const PASS_LENGTH = 8
 // type SignupResult = boolean | { errors: Record<string, string>};
-interface IErrors {
-    email?: string,
-    password?: string
-}
-
-export async function signup(prevState: any, formData: FormData) {
-    const email = formData.get('email') as string;
-    const password = formData.get('password') as string;
-
-    let errors: Partial<IErrors> = {};
-
-    if (!email.includes('@')) {
-        errors.email = 'Invalid email';
-    }
-
-    if (password?.trim().length < PASS_LENGTH) {
-        errors.password = `Password must be at least ${PASS_LENGTH} characters`;
-    }
-
-    if (Object.keys(errors).length) {
-        return {
-            errors,
-        }
-    }
-
-    // return Promise.resolve(true);
-
-    // store it in the db (create a new user)
-
-    // redirect('/recipes')
-}
 
 export async function verifyCodeAction(prevState: any, formData: FormData): Promise<any> {
     const code = formData.get("code");
@@ -130,7 +99,6 @@ export async function registerUserAction(prevState: any, formData: FormData) {
 }
 
 export async function loginUserAction(prevState: any, formData: FormData) {
-    console.log('loginUserAction')
     const fields = {
         password: formData.get("password"),
         email: formData.get("email"),
@@ -164,15 +132,4 @@ export async function loginUserAction(prevState: any, formData: FormData) {
             message: "Failed to Login User.",
         };
     }
-}
-
-const authUser = (value: string) => {
-    const expires = new Date(Date.now() + 0.2 * 24 * 60 * 60 * 1000)
-    cookies().set('authenticated', value, {
-        httpOnly: true,
-        secure: true,
-        expires: expires,
-        sameSite: 'lax',
-        path: '/',
-    })
 }

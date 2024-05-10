@@ -28,9 +28,6 @@ export const GET = async (req: NextRequest, res: NextApiResponse) => {
             })
             const [comments, data] = await Promise.all([commentsReq.json(), request.json()]);
             const commentsData = comments.data || []
-            // const data = await request.json();
-            console.log('comments', comments)
-            console.log('data', data)
 
             return new Response(JSON.stringify({ data: {...data.data, comments: commentsData }}), {status: 200})
         }

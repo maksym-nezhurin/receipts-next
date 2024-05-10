@@ -27,11 +27,12 @@ export function SignupForm() {
         redirect: false
     };
     const [formState, formAction] = useFormState(registerUserAction, INITIAL_STATE);
-    const [shownCodeForm, setShownCodeForm] = useState(true);
+    const [shownCodeForm, setShownCodeForm] = useState(false);
 
     useEffect(() => {
+        setShownCodeForm(!!formState?.redirect);
         // if (formState?.redirect) {
-        //     setShownCodeForm(true);
+        //
         // } else {
         //     setShownCodeForm(false);
         // }

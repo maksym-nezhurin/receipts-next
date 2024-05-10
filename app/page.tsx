@@ -2,7 +2,7 @@ import Image from "next/image";
 
 export default function Home() {
   return (
-    <main className="flex flex-col min-h-screen flex-col items-center justify-between p-24">
+    <main className="flex flex-col min-h-[200px] items-center justify-between p-24">
       <div className='col-auto'>
         <h1 className="text-4xl font-bold">Welcome to Recipients page!</h1>
       </div>

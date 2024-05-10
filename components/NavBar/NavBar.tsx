@@ -7,18 +7,25 @@ import {useSession} from "next-auth/react";
 import styles from './NavBar.module.css';
 import {UserMenuIcon} from "@/components/UserMenuIcon/UserMenuIcon";
 import {ISession} from "@/interfaces/auth";
+import {usePathname} from "next/navigation";
+import {cn} from "@/lib/utils";
 
-export const NavBar = () => {
+interface IProps {
+    className?: string;
+}
+
+export const NavBar = (props: IProps) => {
+    const { className } = props;
     const { data: session}= useSession();
     // @ts-ignore
     const isLogged = !!session?.user?.accessToken;
-    console.log('session', session)
     const [open, setOpen] = useState(false);
+    const pathname = usePathname();
 
     return (
-        <nav className="flex items-center justify-between flex-wrap bg-teal-500 p-8">
+        <nav className={cn(className, "flex items-center justify-between flex-wrap bg-teal-500 p-8")}>
             <div className="flex items-center flex-shrink-0 text-white mr-6">
-                <span className="font-semibold text-xl tracking-tight">Tailwind CSS</span>
+                <span className="font-semibold text-xl tracking-tight">Recipes</span>
             </div>
             <div className="block lg:hidden">
                 <button
@@ -33,7 +40,8 @@ export const NavBar = () => {
             <div className={`${open ? styles.none : 'block' } w-full flex-grow lg:flex lg:items-center lg:w-auto`}>
                 <div className="text-sm lg:flex-grow">
                     {NAV_ITEMS.map(({ path, name, auth}) => {
-                        return ((auth && isLogged) || (!auth)) && <Link key={path} href={path} className='block mt-4 lg:inline-block lg:mt-0 text-teal-200 hover:text-white mr-4'>{name}</Link>
+                        const isActive = pathname === path;
+                        return ((auth && isLogged) || (!auth)) && <Link key={path} href={path} className={`${isActive ? styles.active : '' } block mt-4 lg:inline-block lg:mt-0 text-teal-200 hover:text-white mr-4`}>{name}</Link>
                     })}
                 </div>
                 <div>

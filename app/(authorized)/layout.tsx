@@ -10,9 +10,7 @@ export default async function AuthLayout({ children }: { children: React.ReactNo
 
     return (
         <>
-            {/*<DashboardComponent />*/}
-            <h2>Hello {sessionUser?.user?.name}</h2>
-            <div className="px-6 py-4">{children}</div>
+            <div>{children}</div>
         </>
     )
 }

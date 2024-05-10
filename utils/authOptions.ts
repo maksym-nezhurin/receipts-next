@@ -6,7 +6,7 @@ interface IRequest {
     user: {
         id: number;
         name: string;
-        avatar: string;
+        image: string;
     };
     success: boolean;
     access_token: string;
@@ -45,6 +45,10 @@ export const authOptions: NextAuthOptions = {
                     }
                 }
 
+                if (!credentials?.email || !credentials?.password) {
+                    return { error: 'Email and password are required' };
+                }
+
                 const data = {
                     email: credentials?.email,
                     password: credentials?.password,
@@ -65,15 +69,15 @@ export const authOptions: NextAuthOptions = {
                 }
                 try {
                     const response = await fetch(`${process.env.API_URL}/api/login`, options)
-
+                    const { data }: { data: IRequest} = await response.json();
                     if (response.ok) {
-                        const res: IRequest = await response.json();
-                        const { message, user, access_token } = res;
+
+                        const { message, user, access_token } = data;
                         return {
                             id: user.id,
                             name: user.name,
                             email: credentials?.email,
-                            avatar: user.avatar,
+                            avatar: user.image,
                             accessToken: access_token
                         };
                     } else {

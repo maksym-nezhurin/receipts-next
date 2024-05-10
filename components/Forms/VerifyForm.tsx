@@ -8,7 +8,6 @@ import {
     CardDescription,
     CardHeader,
     CardContent,
-    CardFooter,
     Card,
 } from "@/components/ui/card";
 
@@ -21,7 +20,7 @@ import {useEffect} from "react";
 
 2
 
-export function VerifyForm(props) {
+export function VerifyForm(props: { email?: string }) {
     const router = useRouter();
     const { email = 'mnezhurin17@gmail.com' } = props;
     const [formState, formAction] = useFormState(verifyCodeAction, { code: ''});
@@ -35,7 +34,6 @@ export function VerifyForm(props) {
         router.push('/login')
     }
 
-    console.log(formState)
     return (
         <div className="w-full max-w-md">
             <Card>

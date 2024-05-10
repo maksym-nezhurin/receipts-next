@@ -46,8 +46,8 @@ export const UserMenuIcon = (props: IProps) => {
             >Sign Out
             </button>
         </> : <>
-            <div className="flex items-center">
-                <Link href={'/signin?callbackUrl=http%3A%2F%2Flocalhost%3A3000%2F'}>
+            <div className="flex items-center text-sm text-grey-500">
+                <Link href={'/signin?callbackUrl=http%3A%2F%2Flocalhost%3A3000%2F'} className='px-4 py-2.5'>
                     Login
                 </Link>
             </div>
@@ -79,7 +79,7 @@ export const UserMenuIcon = (props: IProps) => {
             isProfileMenuOpen && (
                 <div
                     id="user-menu"
-                    className="absolute right-0 z-10 mt-2 w-48 origin-top-right rounded-md bg-white py-1 shadow-lg ring-1 ring-black ring-opacity-5 focus:outline-none"
+                    className="absolute left-0 lg:right-0 lg:left-auto z-10 mt-2 w-48 origin-top-right rounded-md bg-white py-1 shadow-lg ring-1 ring-black ring-opacity-5 focus:outline-none"
                     role="menu"
                     aria-orientation="vertical"
                     aria-labelledby="user-menu-button"

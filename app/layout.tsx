@@ -5,6 +5,9 @@ import AuthProvider from "@/components/AuthProvider";
 import "./globals.css";
 import React from "react";
 import {NavBar} from "@/components/NavBar/NavBar";
+import {cn} from "@/lib/utils";
+
+import styles from './layout.module.css';
 
 const inter = Inter({ subsets: ["latin"] });
 
@@ -21,12 +24,12 @@ export default function RootLayout({
   return (
       <AuthProvider>
           <html lang="en">
-              <body className={inter.className}>
-                  <NavBar />
-                  <main className='min-h-screen flex flex-col'>
+              <body className={cn(inter.className, styles.body)}>
+                  <NavBar className={'nav'}/>
+                  <main className={cn(styles.main, 'flex flex-col p-4 md:p-10')}>
                       {children}
                   </main>
-                  <Footer/>
+                  <Footer className={styles.footer}/>
               </body>
           </html>
       </AuthProvider>

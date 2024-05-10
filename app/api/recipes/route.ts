@@ -6,17 +6,22 @@ export const GET = async (req: Request | NextRequest, res: NextApiResponse) => {
     try {
         const token = await getUserToken();
 
-        if (token) {
-            const request = await fetch(`${process.env.API_URL}/api/recipes`, {
-                method: "GET",
-                headers: {
-                    "Content-Type": "application/json",
-                    "Authorization": token
-                },
-            })
-            const data = await request.json();
+        const getData = (url = '') => fetch(`${process.env.API_URL}/api/${url}`, {
+            method: "GET",
+            headers: {
+                "Accept": "application/json",
+                "Authorization": token || '',
+            },
+        })
 
-            return new Response(JSON.stringify({ ...data }), { status: 200 })
+        if (token) {
+            const [likedRecipesRes, myRecipeRes] = await Promise.all([
+                getData('liked-receipts'),
+                getData('my-recipes')
+            ])
+            const [{ data: likedRecipes }, {data: myRecipes }] = await Promise.all([likedRecipesRes.json(), myRecipeRes.json()]);
+
+            return new Response(JSON.stringify({ likedRecipes, myRecipes }), { status: 200 })
         }
 
         return new Response(JSON.stringify({ message: 'Unauthorized' }), { status: 400 })

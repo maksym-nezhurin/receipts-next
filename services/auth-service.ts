@@ -33,8 +33,6 @@ export async function registerUserService(userData: RegisterUserProps) {
 }
 
 export async function loginUserService(userData: LoginUserProps) {
-    // const url = new URL("/api/login", baseUrl);
-
     try {
         const response = await fetch(`${process.env.BASE_URL}/api/login`, {
             method: "POST",
