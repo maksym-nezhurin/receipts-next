@@ -2,6 +2,7 @@
 import {Recipes} from "@/components/Recipes/Recipes";
 import React, {Suspense, useEffect} from "react";
 import {IRecipe} from "@/interfaces/recipe";
+import Spinner from "@/components/Spinner";
 
 async function getRecipes() {
     const res = await fetch('/api/recipes');
@@ -29,7 +30,7 @@ function RecipesPage() {
             <section className="bg-teal-500">
             <div className="container py-10">
                     <h2 className="p-6 text-center">Here you can find recipes created my you</h2>
-                    <Suspense fallback={<div>Loading...</div>}>
+                    <Suspense fallback={<Spinner loading={true} />}>
                         <Recipes recipes={myRecipes}/>
                     </Suspense>
                 </div>

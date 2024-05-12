@@ -1,6 +1,7 @@
 'use client'
 import {Recipe} from "@/components/Recipe/Recipe";
 import { useState, useEffect} from "react";
+import Spinner from "@/components/Spinner";
 
 const getTheRecipe = async (id: string) => {
     try {
@@ -14,16 +15,17 @@ const getTheRecipe = async (id: string) => {
 
 export default function RecipePage ({ params: { id } }: { params: { id: string } } ) {
     const [recipe, setRecipe] = useState(null);
+    const [loading, setLoading] = useState(true);
     useEffect(() => {
         const getData = async () => {
             const res = await getTheRecipe(id);
 
             setRecipe(res.data);
         };
-        getData().then()
+        getData().then().finally(() => setLoading(false));
     }, [id]);
 
-    return (
+    return loading ? <Spinner loading={true} /> : (
         <div>
             <h1 className="text-4xl font-bold">Welcome to Recipe page!</h1>
             <div>this is Auth page</div>
