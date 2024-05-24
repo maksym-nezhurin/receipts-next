@@ -9,8 +9,8 @@ export const getData = async () => {
 export default async function IngredientsPage() {
     const ingredients = await getData();
     // console.log(ingredients)
-    return (<>
+    return (<div className="container">
         <h1>Ingredients</h1>
         <IngredientList ingredients={ingredients}/>
-    </>)
+    </div>)
 }

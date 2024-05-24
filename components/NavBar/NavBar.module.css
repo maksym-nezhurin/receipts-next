@@ -1,5 +1,9 @@
 .active {
-    color: #f5f5f5;
+    color: black;
+}
+
+.link {
+    font-size: 1.1rem;
 }
 
 @media screen and (max-width: 1024px) {

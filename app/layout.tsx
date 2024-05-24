@@ -6,6 +6,7 @@ import "./globals.css";
 import React from "react";
 import {NavBar} from "@/components/NavBar/NavBar";
 import {cn} from "@/lib/utils";
+import {HeroImage} from "@/components/HeroImage/HeroImage";
 
 import styles from './layout.module.css';
 
@@ -25,11 +26,13 @@ export default function RootLayout({
       <AuthProvider>
           <html lang="en">
               <body className={cn(inter.className, styles.body)}>
-                  <NavBar className={'nav'}/>
-                  <main className={cn(styles.main, 'flex flex-col p-4 md:p-10')}>
+                <HeroImage title='Recipes' subtitle={'Engoy your meal!'}>
+                    <NavBar className={'nav'}/>
+                </HeroImage>
+                  <main className={cn(styles.main, 'my-4 md:my-8')}>
                       {children}
                   </main>
-                  <Footer className={styles.footer}/>
+                <Footer className={styles.footer}/>
               </body>
           </html>
       </AuthProvider>

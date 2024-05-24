@@ -3,17 +3,16 @@ import Link from "next/link";
 import {IRecipe} from "@/interfaces/recipe";
 
 interface IRecipesResponse { data: IRecipe[], links: Object, meta: Object }
-async function getServerSideProps()
-{
-    const res = await fetch('http://127.0.0.1:8000/api/recipes');
+async function getServerSideProps(){
+    const res = await fetch(`${process.env.API_URL}/api/recipes`);
     return await res.json();
 }
 
 export default async function RecipesPage()  {
     try {
         const { data = [], links, meta }: IRecipesResponse = await getServerSideProps();
-        // console.log(recipes)
-        return (<div>
+
+        return (<div className="container">
             <h1 className="text-4xl font-bold">Welcome to Recipes page.</h1>
             <h2 className="py-3">Here you can find all available recipes and save items that you liked most.</h2>
 

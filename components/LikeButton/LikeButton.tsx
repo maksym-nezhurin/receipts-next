@@ -7,13 +7,15 @@ import {FormEvent, useEffect, useState} from "react";
 interface ILikeButtonProps {
     onHandleClick: () => void;
     liked: boolean;
+    amount: number;
 }
 
-export const LikeButton = (props: any) => {
-    const { liked = false, onHandleClick } = props;
-    const { data: session  } = useSession();
-    const { user } = session || {};
-    const { accessToken } = user || { accessToken: '' };
+export const LikeButton = (props: ILikeButtonProps) => {
+    const {liked = false, amount, onHandleClick} = props;
+    const {data: session} = useSession();
+    const {user} = session || {};
+    // @ts-ignore
+    const {accessToken} = user || {accessToken: ''};
     const showComponent = !!accessToken;
 
     const handleLikeClick = async (e: FormEvent) => {
@@ -25,9 +27,12 @@ export const LikeButton = (props: any) => {
         return null;
     }
 
-    return (
-        <button onClick={handleLikeClick}>
-            {liked ? <FaHeart/> : <FaHeartbeat/>}
-        </button>
+    return (<>
+            <span>{amount}</span>
+            <button onClick={handleLikeClick}>
+                {liked ? <FaHeart/> : <FaHeartbeat/>}
+            </button>
+        </>
+
     );
 }

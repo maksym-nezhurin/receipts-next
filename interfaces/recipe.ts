@@ -8,6 +8,13 @@ export interface IRecipe {
     prep_time: number;
     ingredients: IIngredient[];
     comments?: IComment[];
+    likes?: {
+        amount: number;
+        users: {
+            id: number;
+            name: string;
+        }[];
+    };
 }
 
 export interface IIngredient {

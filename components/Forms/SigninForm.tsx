@@ -13,7 +13,6 @@ import {
 
 import { Label } from "@/components/ui/label";
 import { Input } from "@/components/ui/input";
-import {useFormState} from "react-dom";
 import {loginUserAction} from "@/actions/auth-actions";
 import {FormErrors} from "@/components/Forms/FormErrors";
 import {SubmitButton} from "@/components/SubmitButton/SubmitButton";
@@ -21,9 +20,16 @@ import {useEffect, useState} from "react";
 import {useRouter} from "next/navigation";
 import {signIn, useSession} from "next-auth/react";
 
-const initialState = {
+interface IState {
+    email: string;
+    password: string;
+    zodErrors: { [keyof: string]: string[]};
+}
+
+const initialState: IState = {
     email: '',
-    password: ''
+    password: '',
+    zodErrors: {}
 }
 export function SigninForm() {
     const router = useRouter();
@@ -41,19 +47,29 @@ export function SigninForm() {
 
     const onHandleSubmit = async (e: React.FormEvent) => {
         e.preventDefault();
-        console.log(formState, 'formState')
-        await signIn('credentials', {
-            redirect: false,
-            ...formState,
-        })
+        const result = await loginUserAction({data: 'error'}, new FormData(e.target as HTMLFormElement));
+
+        if (result.status === 'ok') {
+            await signIn('credentials', {
+                ...formState,
+                redirect: false, // Запобігає автоматичному перенаправленню
+            });
+        } else if (result.data === 'error') {
+            setError('Invalid credentials, try again');
+            setFormState({ ...formState, zodErrors: result.zodErrors });
+        }
+
         // @ts-ignore
         if (!session?.user?.accessToken) {
             setError('Invalid credentials, try again');
-            setFormState(initialState);
+            setFormState((state) => ({
+                ...state,
+                email: '',
+                password: ''
+            }));
         }
     }
 
-    // console.log(formState.message, 'check if user is logged in');
     return (
         <div className="w-full max-w-md">
             <form onSubmit={onHandleSubmit}>
@@ -75,7 +91,7 @@ export function SigninForm() {
                                 onChange={(e) => setFormState({...formState, email: e.target.value})}
                                 placeholder="username or email"
                             />
-                            {/*<FormErrors errors={formState?.zodErrors?.email} />*/}
+                            <FormErrors errors={formState?.zodErrors?.email} />
                         </div>
                         <div className="space-y-2">
                             <Label htmlFor="password">Password</Label>
@@ -87,7 +103,7 @@ export function SigninForm() {
                                 onChange={(e) => setFormState({...formState, password: e.target.value})}
                                 placeholder="password"
                             />
-                            {/*<FormErrors errors={formState?.zodErrors?.password} />*/}
+                            <FormErrors errors={formState?.zodErrors?.password} />
                         </div>
                     </CardContent>
                     <CardFooter className="flex flex-col">

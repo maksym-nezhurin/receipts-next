@@ -25,9 +25,9 @@ export default function RecipePage ({ params: { id } }: { params: { id: string }
         getData().then().finally(() => setLoading(false));
     }, [id]);
 
-    return loading ? <Spinner loading={true} /> : (
-        <div>
-            <h1 className="text-4xl font-bold">Welcome to Recipe page!</h1>
+    return loading ? <Spinner loading={loading} /> : (
+        <div className="container">
+            <h1 className="text-4xl text-center font-bold">Welcome to Recipe page!</h1>
             <div>this is Auth page</div>
             <Recipe recipe={recipe} />
         </div>

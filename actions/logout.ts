@@ -2,8 +2,7 @@ import { signOut } from 'next-auth/react';
 
 export async function logout () {
     try {
-        console.log('request')
-        await fetch(`${process.env.API_URL}/api/logout`, {
+        await fetch(`${process.env.NEXT_PUBLIC_API_URL}/api/logout`, {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json'

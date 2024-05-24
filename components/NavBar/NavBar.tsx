@@ -23,7 +23,7 @@ export const NavBar = (props: IProps) => {
     const pathname = usePathname();
 
     return (
-        <nav className={cn(className, "flex items-center justify-between flex-wrap bg-teal-500 p-8")}>
+        <nav className={cn(className, "flex items-center justify-between flex-wrap bg-white bg-opacity-50 w-full p-8 md:fixed top-0")}>
             <div className="flex items-center flex-shrink-0 text-white mr-6">
                 <span className="font-semibold text-xl tracking-tight">Recipes</span>
             </div>
@@ -41,7 +41,11 @@ export const NavBar = (props: IProps) => {
                 <div className="text-sm lg:flex-grow">
                     {NAV_ITEMS.map(({ path, name, auth}) => {
                         const isActive = pathname === path;
-                        return ((auth && isLogged) || (!auth)) && <Link key={path} href={path} className={`${isActive ? styles.active : '' } block mt-4 lg:inline-block lg:mt-0 text-teal-200 hover:text-white mr-4`}>{name}</Link>
+                        return ((auth && isLogged) || (!auth)) && <Link key={path} href={path} className={cn(`ext-size-xl block mt-4 lg:inline-block lg:mt-0 text-my-green hover:text-black mr-4`,
+                            {
+                                [styles.active]: isActive,
+                                [styles.link]: true
+                            })}>{name}</Link>
                     })}
                 </div>
                 <div>

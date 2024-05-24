@@ -42,7 +42,6 @@ export const IngredientList = (props: IProps) => {
             });
             const { data } = await res.json();
             setRecipes(data);
-            console.log(data);
         }
         getRecipesByIngredients()
     }, [checkedState]);
@@ -51,8 +50,6 @@ export const IngredientList = (props: IProps) => {
         <h2 className="text-center">Ingredient List</h2>
         <div>
             {ingredients.map((ingredient, index) => {
-
-                // console.log(checkedState[ingredient.name.toLowerCase()])
                 return <div key={index} className="flex justify-between">
                     <CheckboxItem id={ingredient.name} label={ingredient.name} checked={checkedState[ingredient.id]}
                                   onChange={(state: boolean) => onChange(state, ingredient.id)}/>

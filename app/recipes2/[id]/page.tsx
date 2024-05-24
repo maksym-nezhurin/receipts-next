@@ -13,7 +13,7 @@ export default async function RecipePage({ params: { id } }: { params: { id: str
     try {
         const { data }: { data: IRecipe } = await getServerSideProps(id);
 
-        return (<div>
+        return (<div className="container">
             <div className="flex justify-between">
                 <div></div>
                 <div>

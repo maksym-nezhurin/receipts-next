@@ -8,18 +8,25 @@ import {useState} from "react";
 import {prepareDate} from "@/utils/date";
 import {Ingredient} from "@/components/Ingredient/Ingredient";
 import {Comment} from "@/components/Comment/Comment";
+import {useSession} from "next-auth/react";
 import {cn} from "@/lib/utils";
+import {Session} from "next-auth";
 
 interface IProps {
-    recipe: IRecipe | null;
+    recipe: IRecipe;
     className?: string;
 }
 
 export const Recipe = (props: IProps) => {
+    const { data: session  } = useSession();
     const { className, recipe } = props;
-    const ingredients = recipe?.ingredients || [];
-    const comments = recipe?.comments || [];
-    const [isLiked, setIsLiked] = useState<boolean>(false);
+    const {
+        likes = { users: [], amount: 0 },
+        ingredients = [],
+        comments = [] } = recipe as IRecipe || {};
+    const user = session as Session & { id: string };
+    const likedByMe = !!likes?.users.find((like) => like.id === parseInt(user?.id, 10));
+    const [isLiked, setIsLiked] = useState<boolean>(likedByMe);
 
     if (!recipe) {
         return <p>Recipe not found</p>;
@@ -42,7 +49,7 @@ export const Recipe = (props: IProps) => {
     return (
         <div className={cn(styles.recipe, 'p-2 md:p-4 relative bg-white', className)}>
             <div className="absolute top-2 right-2">
-                <LikeButton liked={isLiked} onHandleClick={handleLikeClick}/>
+                <LikeButton liked={isLiked} amount={likes.amount} onHandleClick={handleLikeClick}/>
             </div>
             <h3 className="text-gray-400 text-xl text-center">{recipe.name}</h3>
             <div className="flex justify-between py-2">

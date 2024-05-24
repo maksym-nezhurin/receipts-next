@@ -75,14 +75,6 @@ export async function registerUserAction(prevState: any, formData: FormData) {
             };
         }
 
-        // const {
-        //     data: user,
-        //     access_token,
-        //     token_type
-        // } = responseData;
-        // console.log('user', user);
-        // authUser(`${token_type} ${access_token}`)
-
         return {
             message,
             redirect,
@@ -116,11 +108,6 @@ export async function loginUserAction(prevState: any, formData: FormData) {
     }
 
     try {
-        // signIn('credentials', {
-        //     redirect: true, // Запобігає автоматичному перенаправленню
-        //     ,
-        // });
-
         return {
             status: 'ok',
             data: validatedFields.data,
